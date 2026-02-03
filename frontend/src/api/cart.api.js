@@ -1,0 +1,8 @@
+import api from "./axios";
+
+export const getCart = () => api.get("/cart");
+export const addToCart = (data) => api.post("/cart/add", data);
+export const updateCartItem = (id, quantity) =>
+  api.patch(`/cart/item/${id}`, { quantity });
+export const removeCartItem = (id) =>
+  api.delete(`/cart/item/${id}`);
