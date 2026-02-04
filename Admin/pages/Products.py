@@ -67,21 +67,20 @@ with tab1:
 
     if not products:
         st.info("No products loaded. Click Search.")
-        st.stop()
-
+    else:
     # ================= TABLE =================
-    st.dataframe(
-        pd.DataFrame([
-            {
-                "ID": p["id"],
-                "Name": p["name"],
-                "Price": p["base_price"],
-                "Active": p.get("is_active", True)
-            }
-            for p in products
-        ]),
-        use_container_width=True
-    )
+        st.dataframe(
+            pd.DataFrame([
+                {
+                    "ID": p["id"],
+                    "Name": p["name"],
+                    "Price": p["base_price"],
+                    "Active": p.get("is_active", True)
+                }
+                for p in products
+            ]),
+            use_container_width=True
+        )
 
     # ================= OPEN PRODUCT =================
     st.divider()
@@ -106,7 +105,7 @@ with tab1:
 
         if not isinstance(selected_product, dict) or "id" not in selected_product:
             st.error(selected_product.get("message", "Failed to load product"))
-            st.stop()
+            # st.stop()
 
         # ================= IMAGE UPLOAD =================
         st.markdown("### ➕ Upload Images")
@@ -121,7 +120,7 @@ with tab1:
         if st.button("Upload Images"):
             if not upload_images:
                 st.warning("Please select at least one image")
-                st.stop()
+                # st.stop()
 
             files = [
                 ("images", (img.name, img, img.type))
@@ -311,15 +310,15 @@ with tab2:
     if submitted:
         if not name.strip():
             st.warning("Product name is required")
-            st.stop()
+            # st.stop()
 
         if selected_category == "Select category":
             st.warning("Please select a category")
-            st.stop()
+            # st.stop()
 
         if not selected_sizes:
             st.warning("Please select at least one size")
-            st.stop()
+            # st.stop()
 
         sizes_payload = [
             {
@@ -346,7 +345,7 @@ with tab2:
 
         if res.status_code not in [200, 201]:
             st.error(res.json().get("message", "Failed to create product"))
-            st.stop()
+            # st.stop()
 
         st.session_state.new_product_id = res.json()["id"]
         st.success(f"✅ Product created (ID: {st.session_state.new_product_id})")
@@ -366,7 +365,7 @@ with tab2:
         if st.button("Upload Images"):
             if not images:
                 st.warning("Please select at least one image")
-                st.stop()
+                # st.stop()
 
             files = [
                 ("images", (img.name, img, img.type))
@@ -404,7 +403,7 @@ with tab3:
 
     if not product_id:
         st.info("Enter a Product ID to continue")
-        st.stop()
+        # st.stop()
 
     # ---------- FETCH AVAILABLE SIZES ----------
     res = requests.get(
@@ -417,7 +416,7 @@ with tab3:
             st.error(res.json().get("message", "Failed to fetch sizes"))
         else:
             st.error(res.text or "Failed to fetch sizes")
-        st.stop()
+        # st.stop()
 
     data = res.json()
     existing_sizes = data.get("existing_sizes", [])
@@ -459,7 +458,7 @@ with tab3:
         if st.button("➕ Add Sizes"):
             if not selected_sizes:
                 st.warning("Please select at least one size")
-                st.stop()
+                # st.stop()
 
             payload = {
                 "sizes": [
