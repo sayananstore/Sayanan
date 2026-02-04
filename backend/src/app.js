@@ -6,7 +6,7 @@ import productImageRoutes from "./routes/productImage.routes.js";
 import path from "path";
 import orderRoutes from "./routes/order.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
-import wishListRoutes from "./routes/wishList.routes.js";
+import wishListRoutes from "./routes/wishlist.routes.js";
 import CartRoutes from "./routes/cart.routes.js";
 import addressRoutes from "./routes/address.routes.js";
 import Gender from "./routes/admin.routes/gender.routes.js";
