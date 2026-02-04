@@ -1,6 +1,6 @@
 import { Category } from "../../models/category.model.js";
 import { Gender } from "../../models/gender.model.js";
-
+import { Op, fn, col, where } from "sequelize";
 /**
  * GET /api/categories
  */
@@ -14,6 +14,7 @@ export const getCategories = async (req, res) => {
 /**
  * POST /api/categories
  */
+
 export const createCategory = async (req, res) => {
   try {
     const { name, GenderId } = req.body;
@@ -24,13 +25,11 @@ export const createCategory = async (req, res) => {
       });
     }
 
-    // 🔍 Check if category already exists (case-insensitive)
     const existingCategory = await Category.findOne({
-      where: {
-        name: {
-          [Op.iLike || Op.like]: name.trim(), // iLike for Postgres, like for MySQL
-        },
-      },
+      where: where(
+        fn("LOWER", col("name")),
+        name.trim().toLowerCase()
+      ),
     });
 
     if (existingCategory) {
@@ -52,6 +51,7 @@ export const createCategory = async (req, res) => {
     });
   }
 };
+
 
 
 export const deleteCategory = async (req, res) => {
