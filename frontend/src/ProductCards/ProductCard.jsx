@@ -45,7 +45,7 @@ const ProductCard = ({
       try {
 
         const res = await fetch(
-          `http://localhost:5000/api/product/reviews/summary/${product.id}`
+          `https://sayanan.vercel.app//api/product/reviews/summary/${product.id}`
         );
 
         const data = await res.json();
