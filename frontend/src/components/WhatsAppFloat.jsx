@@ -1,7 +1,7 @@
 import "./styles/WhatsAppFloat.css";
 import { FaWhatsapp } from "react-icons/fa";
 
-const PHONE_NUMBER = "919999999999"; 
+const PHONE_NUMBER = "919351415538"; 
 // replace with your number (country code + number)
 
 const MESSAGE = "Hi, I want to know more about your products.";
