@@ -1,6 +1,6 @@
 import WishlistProductCard from "../ProductCards/WishListedProducts.jsx";
 import { useWishlist } from "../context/WishlistContext";
-import "./styles/Wishlist.css";
+import "./styles/WishList.css";
 import DiscountSkeleton from "../sections/DiscountSkeleton.jsx";
 
 const Wishlist = () => {
