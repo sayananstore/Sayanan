@@ -17,126 +17,107 @@ import { Size } from "./size.model.js";
 import { ProductSize } from "./productSize.model.js";
 import { Review } from "./review.model.js";
 
-
 /* =======================
    USER RELATIONS
 ======================= */
 
-// User ↔ Cart
 User.hasOne(Cart, { foreignKey: "user_id" });
 Cart.belongsTo(User, { foreignKey: "user_id" });
 
-// User ↔ Wishlist
 User.hasOne(Wishlist, { foreignKey: "user_id" });
 Wishlist.belongsTo(User, { foreignKey: "user_id" });
 
-// User ↔ Orders
 User.hasMany(Order, { foreignKey: "user_id" });
 Order.belongsTo(User, { foreignKey: "user_id" });
 
-// User ↔ Payments
 User.hasMany(Payment, { foreignKey: "user_id" });
 Payment.belongsTo(User, { foreignKey: "user_id" });
-
-/* =======================
-   CART RELATIONS
-======================= */
-
-// Cart ↔ CartItems
-Cart.hasMany(CartItem, { foreignKey: "cart_id" });
-CartItem.belongsTo(Cart, { foreignKey: "cart_id" });
-
-/* =======================
-   WISHLIST RELATIONS
-======================= */
-
-// Wishlist ↔ WishlistItems
-Wishlist.hasMany(WishlistItem, { foreignKey: "wishlist_id" });
-WishlistItem.belongsTo(Wishlist, { foreignKey: "wishlist_id" });
-
-/* =======================
-   ORDER RELATIONS
-======================= */
-
-// Order ↔ OrderItems
-Order.hasMany(OrderItem, { foreignKey: "order_id" });
-OrderItem.belongsTo(Order, { foreignKey: "order_id" });
-
-// Order ↔ Payments
-Order.hasMany(Payment, { foreignKey: "order_id" });
-Payment.belongsTo(Order, { foreignKey: "order_id" });
-
-/* =======================
-   PRODUCT RELATIONS
-======================= */
-
-// Product ↔ Images
-Product.hasMany(ProductImage, {
-  foreignKey: "product_id",
-  as: "images",
-});
-ProductImage.belongsTo(Product, {
-  foreignKey: "product_id",
-});
-
-/* =======================
-   WISHLIST ITEM ↔ PRODUCT
-======================= */
-
-Product.hasMany(WishlistItem, {
-  foreignKey: "product_id",
-});
-
-WishlistItem.belongsTo(Product, {
-  foreignKey: "product_id",
-});
-
-
-/* =======================
-   CART ITEM ↔ PRODUCT
-======================= */
-
-Product.hasMany(CartItem, {
-  foreignKey: "product_id",
-});
-
-CartItem.belongsTo(Product, {
-  foreignKey: "product_id",
-});
-
 
 User.hasMany(Address, { foreignKey: "user_id" });
 Address.belongsTo(User, { foreignKey: "user_id" });
 
-/* Order ↔ Address */
+/* =======================
+   CART
+======================= */
+
+Cart.hasMany(CartItem, { foreignKey: "cart_id" });
+CartItem.belongsTo(Cart, { foreignKey: "cart_id" });
+
+/* =======================
+   WISHLIST
+======================= */
+
+Wishlist.hasMany(WishlistItem, { foreignKey: "wishlist_id" });
+WishlistItem.belongsTo(Wishlist, { foreignKey: "wishlist_id" });
+
+/* =======================
+   ORDER
+======================= */
+
+Order.hasMany(OrderItem, { foreignKey: "order_id" });
+OrderItem.belongsTo(Order, { foreignKey: "order_id" });
+
+Order.hasMany(Payment, { foreignKey: "order_id" });
+Payment.belongsTo(Order, { foreignKey: "order_id" });
+
+/* =======================
+   ORDER ↔ ADDRESS
+======================= */
+
 Address.hasMany(Order, { foreignKey: "shipping_address_id" });
 Order.belongsTo(Address, { foreignKey: "shipping_address_id" });
 
+/* =======================
+   PRODUCT
+======================= */
 
-Gender.hasMany(Category);
+Product.hasMany(ProductImage, {
+  foreignKey: "product_id",
+  as: "images",
+});
+ProductImage.belongsTo(Product, { foreignKey: "product_id" });
+
+Product.hasMany(WishlistItem, { foreignKey: "product_id" });
+WishlistItem.belongsTo(Product, { foreignKey: "product_id" });
+
+Product.hasMany(CartItem, { foreignKey: "product_id" });
+CartItem.belongsTo(Product, { foreignKey: "product_id" });
+
+/* =======================
+   CATEGORY TREE
+======================= */
+
+Gender.hasMany(Category, { foreignKey: "GenderId" });
 Category.belongsTo(Gender, { foreignKey: "GenderId" });
 
-Category.hasMany(SubCategory);
+Category.hasMany(SubCategory, { foreignKey: "CategoryId" });
 SubCategory.belongsTo(Category, { foreignKey: "CategoryId" });
-
-// SubCategory.hasMany(Product);
-Product.belongsTo(SubCategory, {
-  foreignKey: "subcategory_id",
-});
-Product.belongsTo(Category, {
-  foreignKey: "category_id",
-});
-Product.belongsToMany(Size, { through: ProductSize });
-Size.belongsToMany(Product, { through: ProductSize });
-
-Product.hasMany(Review);
-Review.belongsTo(Product);
-
-User.hasMany(Review);
-Review.belongsTo(User);
 
 Category.hasMany(Product, { foreignKey: "category_id" });
 SubCategory.hasMany(Product, { foreignKey: "subcategory_id" });
 
 Product.belongsTo(Category, { foreignKey: "category_id" });
 Product.belongsTo(SubCategory, { foreignKey: "subcategory_id" });
+
+/* =======================
+   SIZE
+======================= */
+
+Product.belongsToMany(Size, { through: ProductSize });
+Size.belongsToMany(Product, { through: ProductSize });
+
+/* =======================
+   REVIEW ⭐⭐⭐⭐⭐
+======================= */
+
+Product.hasMany(Review, { foreignKey: "ProductId" });
+Review.belongsTo(Product, { foreignKey: "ProductId" });
+
+User.hasMany(Review, { foreignKey: "UserId" });
+Review.belongsTo(User, {
+  foreignKey: "UserId"   // important for include
+});
+
+
+CartItem.belongsTo(Size, { foreignKey: "size_id" });
+Size.hasMany(CartItem, { foreignKey: "size_id" });

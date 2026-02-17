@@ -1,0 +1,61 @@
+html, body, #root {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  display: none;
+}
+
+/* Style the draggable scrollbar handle (thumb) */
+::-webkit-scrollbar-thumb {
+  background-color: black; /* Example color */
+  border-radius: 100px;
+}
+
+/* Style the scrollbar track (background) */
+::-webkit-scrollbar-track {
+  background: #C9A24D; /* Example track color */
+}
+.app {
+  padding-top: 40px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* THIS pushes footer */
+.page-content {
+  flex: 1;
+}
+
+.google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  background-color: #ffffff;
+  color: #444;
+  font-size: 16px;
+  font-weight: 500;
+
+  padding: 12px 20px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.google-btn:hover {
+  background-color: #f5f5f5;
+  transform: translateY(-2px);
+}
+
+.google-btn:active {
+  transform: scale(0.98);
+}

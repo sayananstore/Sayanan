@@ -1,108 +1,225 @@
-import { Box, IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import { getProducts } from "../api/product.api";
+import { useNavigate } from "react-router-dom";
+import "./styles/HeroSlider.css";
+
+/* MOCK API WITH EDITORIAL TEXT */
+const getSlides = async () => {
+  return {
+    data: [
+      {
+        id: 1,
+        image_url:
+          "https://images.unsplash.com/photo-1509631179647-0177331693ae",
+        title: "CRAFTED FOR ROYALTY",
+        subtitle: "Luxury Ethnicwear For Timeless Elegance",
+        url: "/products/1",
+      },
+      {
+        id: 2,
+        image_url:
+          "https://images.unsplash.com/photo-1490481651871-ab68de25d43d",
+        title: "NEW FESTIVE EDIT",
+        subtitle: "Designed To Make An Entrance",
+        url: "/products/1",
+      },
+      {
+        id: 3,
+        image_url:
+          "https://images.unsplash.com/photo-1483985988355-763728e1935b",
+        title: "MODERN TRADITION",
+        subtitle: "Where Heritage Meets Couture",
+        url: "/products/1",
+      },
+    ],
+  };
+};
 
 const HeroSlider = () => {
-  const [images, setImages] = useState([]);
+  const [slides, setSlides] = useState([]);
   const [index, setIndex] = useState(0);
+  const navigate = useNavigate();
 
-  /* Fetch images from products (TEMP strategy) */
   useEffect(() => {
-    getProducts({ limit: 5 })
-      .then((res) => {
-        const imgs =
-          res.data.products?.flatMap(
-            (p) => p.images?.map((img) => img.image_url) || []
-          ) || [];
-
-        setImages(imgs);
-      })
+    getSlides()
+      .then((res) => setSlides(res.data.sort((a, b) => a.id - b.id)))
       .catch(console.error);
   }, []);
 
-  /* Auto slide */
   useEffect(() => {
-    if (images.length === 0) return;
+    if (!slides.length) return;
 
     const interval = setInterval(() => {
-      setIndex((prev) => (prev + 1) % images.length);
-    }, 5000);
+      setIndex((prev) => (prev + 1) % slides.length);
+    }, 6000); // slower = luxury
 
     return () => clearInterval(interval);
-  }, [images]);
+  }, [slides]);
 
-  if (images.length === 0) return null;
+  if (!slides.length) return null;
 
-  const prevSlide = () =>
-    setIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
-
-  const nextSlide = () =>
-    setIndex((prev) => (prev + 1) % images.length);
+  const slide = slides[index];
 
   return (
-    <Box
-      sx={{
-		overflowX: "hidden",
-        position: "relative",
-        width: "100%",
-			height: { xs: "45vh", sm: "60vh", md: "100vh" },
-        backgroundImage: `url(${images[index]})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        transition: "background-image 0.8s ease-in-out",
-      }}
+    <section
+      className="hero"
+      style={{ backgroundImage: `url(${slide.image_url})` }}
     >
-      {/* Overlay for luxury contrast */}
-      <Box
-        sx={{
-          position: "absolute",
-          inset: 0,
-          background:
-            "linear-gradient(to bottom, rgba(0,0,0,0.35), rgba(0,0,0,0.6))",
-        }}
-      />
+      <div className="hero-overlay" />
 
-      {/* Prev Button */}
-      <IconButton
-        onClick={prevSlide}
-        sx={{
-          position: "absolute",
-          top: "50%",
-          left: { xs: 10, md: 20 },
-          transform: "translateY(-50%)",
-          backgroundColor: "rgba(0,0,0,0.45)",
-          color: "#C9A24D",
-          zIndex: 2,
-          "&:hover": {
-            backgroundColor: "rgba(0,0,0,0.7)",
-          },
-        }}
-      >
-        <ArrowBackIosNewIcon />
-      </IconButton>
+      {/* TEXT */}
+      <div className="hero-content">
+        <h1>{slide.title}</h1>
+        <p>{slide.subtitle}</p>
 
-      {/* Next Button */}
-      <IconButton
-        onClick={nextSlide}
-        sx={{
-          position: "absolute",
-          top: "50%",
-          right: { xs: 10, md: 20 },
-          transform: "translateY(-50%)",
-          backgroundColor: "rgba(0,0,0,0.45)",
-          color: "#C9A24D",
-          zIndex: 2,
-          "&:hover": {
-            backgroundColor: "rgba(0,0,0,0.7)",
-          },
-        }}
+        <button onClick={() => navigate(slide.url)}>
+          Explore Collection
+        </button>
+      </div>
+
+      {/* ARROWS */}
+      <button
+        className="hero-btn left"
+        onClick={() =>
+          setIndex(index === 0 ? slides.length - 1 : index - 1)
+        }
       >
-        <ArrowForwardIosIcon />
-      </IconButton>
-    </Box>
+        ❮
+      </button>
+
+      <button
+        className="hero-btn right"
+        onClick={() =>
+          setIndex((index + 1) % slides.length)
+        }
+      >
+        ❯
+      </button>
+    </section>
   );
 };
 
 export default HeroSlider;
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// import { useEffect, useState } from "react";
+	// import { useNavigate } from "react-router-dom";
+	// import "./styles/HeroSlider.css";
+
+	// /* TEMP MOCK API */
+	// const getSlides = async () => {
+	// return {
+	// 	data: [
+	// 	{
+	// 		id: 1,
+	// 		image_url:
+	// 		"https://images.unsplash.com/photo-1523275335684-37898b6baf30",
+	// 		url: "/products/1",
+	// 	},
+	// 	{
+	// 		id: 2,
+	// 		image_url:
+	// 		"https://images.unsplash.com/photo-1505740420928-5e560c06d30e",
+	// 		url: "/products/1",
+	// 	},
+	// 	{
+	// 		id: 3,
+	// 		image_url:
+	// 		"https://images.unsplash.com/photo-1512436991641-6745cdb1723f",
+	// 		url: "/products/1",
+	// 	},
+	// 	],
+	// };
+	// };
+
+	// const HeroSlider = () => {
+	// const [slides, setSlides] = useState([]);
+	// const [index, setIndex] = useState(0);
+	// const navigate = useNavigate();
+
+	// /* Fetch slides */
+	// useEffect(() => {
+	// 	getSlides()
+	// 	.then((res) => {
+	// 		const sorted = res.data.sort((a, b) => a.id - b.id);
+	// 		setSlides(sorted);
+	// 	})
+	// 	.catch(console.error);
+	// }, []);
+
+	// /* Auto slide */
+	// useEffect(() => {
+	// 	if (!slides.length) return;
+
+	// 	const interval = setInterval(() => {
+	// 	setIndex((prev) => (prev + 1) % slides.length);
+	// 	}, 5000);
+
+	// 	return () => clearInterval(interval);
+	// }, [slides]);
+
+	// if (!slides.length) return null;
+
+	// const prevSlide = (e) => {
+	// 	e.stopPropagation();
+	// 	setIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1));
+	// };
+
+	// const nextSlide = (e) => {
+	// 	e.stopPropagation();
+	// 	setIndex((prev) => (prev + 1) % slides.length);
+	// };
+
+	// const handleClick = () => {
+	// 	const slide = slides[index];
+	// 	if (slide?.url) navigate(slide.url);
+	// };
+
+	// return (
+	// 	<div
+	// 	className="hero"
+	// 	style={{ backgroundImage: `url(${slides[index].image_url})` }}
+	// 	onClick={handleClick}
+	// 	>
+	// 	<div className="hero-overlay" />
+
+	// 	<button className="hero-btn left" onClick={prevSlide}>
+	// 		❮
+	// 	</button>
+
+	// 	<button className="hero-btn right" onClick={nextSlide}>
+	// 		❯
+	// 	</button>
+	// 	</div>
+	// );
+	// };
+
+	// export default HeroSlider;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

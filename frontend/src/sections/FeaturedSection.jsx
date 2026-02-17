@@ -1,95 +1,83 @@
-import { Box, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { getProducts } from "../api/product.api";
-import ProductCard from "../components/ProductCard";
+import FeaturedProductCard from "../ProductCards/FeaturedProductCard";
+import "./styles/FeaturedSection.css";
+import DiscountSkeleton from "./DiscountSkeleton"; 
 
 const FeaturedSection = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const rowRef = useRef(null);
+
   useEffect(() => {
     getProducts()
       .then((res) => {
         if (Array.isArray(res.data.products)) {
-          setProducts(res.data.products.slice(0, 8)); // show more for scroll
+          setProducts(res.data.products.slice(0, 8));
         }
       })
       .catch(console.error)
       .finally(() => setLoading(false));
   }, []);
 
+  const scroll = (direction) => {
+    const container = rowRef.current;
+    if (!container) return;
+
+    const scrollAmount = 320; // slightly bigger than card width
+
+    container.scrollBy({
+      left: direction === "left" ? -scrollAmount : scrollAmount,
+      behavior: "smooth",
+    });
+  };
+
   return (
-    <Box
-      sx={{
-		overflowX: "hidden",
-        py: { xs: 6, md: 10 },
-      }}
-    >
-      <Box
-        sx={{
-          maxWidth: "1200px",
-          mx: "auto",
-          px: { xs: 2, md: 4 },
-        }}
-      >
-        {/* Header */}
-        <Typography
-          sx={{
-            fontSize: { xs: "1.6rem", md: "2.2rem" },
-            fontWeight: 500,
-            mb: 1,
-          }}
-        >
+    <div className="featured-section">
+      <div className="featured-container">
+
+        <div className="featured-title">
           Featured Collection
-        </Typography>
+          <p className="featured-subtitle">
+            Hand-picked styles from our artisans, just for you
+          </p>
+        </div>
 
-        <Typography
-          sx={{
-            color: "text.secondary",
-            mb: 4,
-            maxWidth: 480,
-          }}
-        >
-          Hand-picked styles from our artisans
-        </Typography>
-
-        {/* Horizontal Scroll */}
         {loading ? (
-          <Typography>Loading featured products...</Typography>
+          <DiscountSkeleton />
         ) : (
-          <Box
-            sx={{
-              display: "flex",
-              gap: 3,
-              overflowX: "auto",
-              scrollSnapType: "x mandatory",
-              pb: 2,
+          <div className="featured-carousel">
 
-              /* Hide scrollbar (optional but premium) */
-              "&::-webkit-scrollbar": {
-                height: 6,
-              },
-              "&::-webkit-scrollbar-thumb": {
-                backgroundColor: "#ccc",
-                borderRadius: 4,
-              },
-            }}
-          >
-            {products.map((product) => (
-              <Box
-                key={product.id}
-                sx={{
-                  minWidth: { xs: 260, md: 300 },
-                  scrollSnapAlign: "start",
-                }}
-              >
-                <ProductCard product={product} />
-              </Box>
-            ))}
-          </Box>
+            {/* LEFT BUTTON */}
+            <button
+              className="scroll-btn left"
+              onClick={() => scroll("left")}
+            >
+              ‹
+            </button>
+
+            {/* PRODUCTS */}
+            <div className="featured-row" ref={rowRef}>
+              {products.map((product) => (
+                <div key={product.id} className="featured-item">
+                  <FeaturedProductCard product={product} />
+                </div>
+              ))}
+            </div>
+
+            {/* RIGHT BUTTON */}
+            <button
+              className="scroll-btn right"
+              onClick={() => scroll("right")}
+            >
+              ›
+            </button>
+
+          </div>
         )}
-      </Box>
-    </Box>
+      </div>
+    </div>
   );
 };
 

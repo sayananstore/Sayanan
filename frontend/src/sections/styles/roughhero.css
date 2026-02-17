@@ -1,0 +1,81 @@
+.discount-section {
+  background-color: #faf8ee;
+  padding: 16px 0;
+  overflow-x: hidden; /* 🚀 prevents page stretch */
+}
+
+.discount-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+@media (min-width: 900px) {
+  .discount-container {
+    padding: 0 32px;
+  }
+}
+
+/* header */
+.discount-title {
+  font-size: 1.6rem;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+
+@media (min-width: 900px) {
+  .discount-title {
+    font-size: 2.2rem;
+  }
+}
+
+.discount-subtitle {
+  color: #666;
+  margin-bottom: 24px;
+  max-width: 480px;
+}
+
+/* product row */
+.discount-row {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 10px;
+  scroll-snap-type: x mandatory;
+}
+
+.discount-row::-webkit-scrollbar {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .discount-row {
+    overflow: visible;
+  }
+}
+
+/* each card wrapper */
+.discount-item {
+  flex: 0 0 auto; /* 🚀 important */
+  scroll-snap-align: start;
+}
+
+/* CTA */
+.discount-cta {
+  text-align: center;
+  margin-top: 40px;
+}
+
+.discount-btn {
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 30px;
+  padding: 12px 28px;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.discount-btn:hover {
+  background: black;
+}

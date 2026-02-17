@@ -1,0 +1,133 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@300;400;500&display=swap');
+
+/* SECTION */
+
+.discount-section{
+  /* background:#c1bb9c; */
+  padding:20px 0;
+}
+
+.discount-container{
+  max-width:1300px;
+  margin:auto;
+  padding:0 clamp(20px,4vw,60px);
+}
+
+/* HEADER */
+
+.discount-title{
+  font-family:'Playfair Display', serif;
+  font-size:2.4rem;
+  letter-spacing:2px;
+  margin-bottom:10px;
+}
+
+.discount-subtitle{
+  font-family:'Inter', sans-serif;
+  color:#777;
+  margin-bottom:50px;
+  max-width:520px;
+}
+
+/* GRID — MUCH MORE PREMIUM */
+
+.discount-row{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 280px));
+  justify-content:center;
+  gap:34px;
+}
+
+/* CARD WRAPPER ANIMATION */
+
+.discount-item{
+  transition:.35s;
+}
+
+.discount-item:hover{
+  transform:translateY(-8px);
+}
+
+/* CTA */
+
+.discount-cta{
+  text-align:center;
+  margin-top:70px;
+}
+
+/* GOLD BUTTON — MUCH BETTER */
+
+.discount-btn{
+  background:#c6a769;
+  color:black;
+  border:none;
+  padding:14px 38px;
+  font-weight:600;
+  letter-spacing:1px;
+  cursor:pointer;
+  transition:.35s;
+}
+
+.discount-btn:hover{
+  background:#b89652;
+  transform:translateY(-3px);
+}
+
+
+
+
+
+/* SKELETON */
+
+.skeleton-card{
+  height:360px;
+  border-radius:18px;
+  overflow:hidden;
+  background:white;
+  box-shadow:0 6px 20px rgba(0,0,0,.05);
+}
+
+.skeleton-image{
+  height:70%;
+  background:#e6e6e6;
+}
+
+.skeleton-text{
+  height:16px;
+  margin:14px;
+  background:#e6e6e6;
+  border-radius:6px;
+}
+
+.skeleton-text.small{
+  width:60%;
+}
+
+/* shimmer animation */
+
+.shimmer{
+  position:relative;
+  overflow:hidden;
+}
+
+.shimmer::after{
+  content:"";
+  position:absolute;
+  top:0;
+  left:-150%;
+  height:100%;
+  width:150%;
+  background:linear-gradient(
+    90deg,
+    transparent,
+    rgba(255,255,255,.5),
+    transparent
+  );
+  animation:shimmer 1.4s infinite;
+}
+
+@keyframes shimmer{
+  100%{
+    left:150%;
+  }
+}

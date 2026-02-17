@@ -1,22 +1,9 @@
-import {
-  Box,
-  Grid,
-  Typography,
-  Divider,
-  Slider,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  ToggleButton,
-  ToggleButtonGroup,
-  Button,
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getProducts } from "../api/product.api";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../ProductCards/ProductCard";
 import BreadcrumbsNav from "../components/BreadcrumbsNav";
+import "./styles/ProductsPage.css";
 
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
@@ -52,86 +39,101 @@ const ProductsPage = () => {
   }, [searchParams.toString()]);
 
   const updateParams = (newParams) => {
-    setSearchParams({ ...Object.fromEntries(searchParams), ...newParams, page: 1 });
+    setSearchParams({
+      ...Object.fromEntries(searchParams),
+      ...newParams,
+      page: 1,
+    });
   };
 
   return (
-    <Box sx={{ px: { xs: 2, md: 6 }, py: 4 }}>
-      <BreadcrumbsNav category={category} />
+    <div className="products-page">
+      <div className="products-container">
+        <BreadcrumbsNav category={category} />
 
-      <Typography variant="h4" sx={{ mb: 2 }}>
-        Products
-      </Typography>
+        <h1 className="page-title">Products</h1>
 
-      <Divider sx={{ mb: 3 }} />
+        {/* ================= FILTERS ================= */}
+        <div className="filters">
 
-      {/* FILTERS */}
-      <Box sx={{ display: "flex", flexWrap: "wrap", gap: 3, mb: 4 }}>
-        {/* Gender */}
-        <ToggleButtonGroup
-          value={gender || ""}
-          exclusive
-          onChange={(e, val) => updateParams({ gender: val || "" })}
-        >
-          <ToggleButton value="Men">Men</ToggleButton>
-          <ToggleButton value="Women">Women</ToggleButton>
-        </ToggleButtonGroup>
+          {/* Gender */}
+          <div className="filter-group">
+            <button
+              className={`pill ${gender === "Men" ? "active" : ""}`}
+              onClick={() => updateParams({ gender: "Men" })}
+            >
+              Men
+            </button>
+            <button
+              className={`pill ${gender === "Women" ? "active" : ""}`}
+              onClick={() => updateParams({ gender: "Women" })}
+            >
+              Women
+            </button>
+          </div>
 
-        {/* Price */}
-        <Box sx={{ width: 220 }}>
-          <Typography variant="caption">Price</Typography>
-          <Slider
-            value={[Number(minPrice), Number(maxPrice)]}
-            min={0}
-            max={5000}
-            onChangeCommitted={(e, v) =>
-              updateParams({ minPrice: v[0], maxPrice: v[1] })
-            }
-          />
-        </Box>
+          {/* Price */}
+          <div className="filter-group price-group">
+            <span>₹{minPrice}</span>
+            <input
+              type="range"
+              min="0"
+              max="5000"
+              defaultValue={maxPrice}
+              onMouseUp={(e) =>
+                updateParams({ minPrice: 0, maxPrice: e.target.value })
+              }
+            />
+            <span>₹{maxPrice}</span>
+          </div>
 
-        {/* Sort */}
-        <FormControl size="small">
-          <InputLabel>Sort</InputLabel>
-          <Select
+          {/* Sort */}
+          <select
+            className="sort-select"
             value={sort}
-            label="Sort"
             onChange={(e) => updateParams({ sort: e.target.value })}
           >
-            <MenuItem value="newest">Newest</MenuItem>
-            <MenuItem value="price_asc">Price: Low to High</MenuItem>
-            <MenuItem value="price_desc">Price: High to Low</MenuItem>
-          </Select>
-        </FormControl>
-      </Box>
+            <option value="newest">Newest</option>
+            <option value="price_asc">Price ↑</option>
+            <option value="price_desc">Price ↓</option>
+          </select>
+        </div>
 
-      {/* PRODUCTS */}
-      <Grid container spacing={3}>
-        {products.map((p) => (
-          <Grid item xs={6} sm={4} md={3} key={p.id}>
-            <ProductCard product={p} />
-          </Grid>
-        ))}
-      </Grid>
+        {/* ================= PRODUCTS ================= */}
+        {loading ? (
+          <div className="loading">Loading products...</div>
+        ) : (
+          <div className="products-grid">
+            {products.map((p) => (
+              <ProductCard key={p.id} product={p} />
+            ))}
+          </div>
+        )}
 
-      {/* PAGINATION */}
-      {meta.totalPages > 1 && (
-        <Box sx={{ mt: 4, textAlign: "center" }}>
-          <Button
-            disabled={page <= 1}
-            onClick={() => updateParams({ page: page - 1 })}
-          >
-            Previous
-          </Button>
-          <Button
-            disabled={page >= meta.totalPages}
-            onClick={() => updateParams({ page: page + 1 })}
-          >
-            Next
-          </Button>
-        </Box>
-      )}
-    </Box>
+        {/* ================= PAGINATION ================= */}
+        {meta.totalPages > 1 && (
+          <div className="pagination">
+            <button
+              disabled={page <= 1}
+              onClick={() => updateParams({ page: page - 1 })}
+            >
+              Previous
+            </button>
+
+            <span>
+              Page {page} / {meta.totalPages}
+            </span>
+
+            <button
+              disabled={page >= meta.totalPages}
+              onClick={() => updateParams({ page: page + 1 })}
+            >
+              Next
+            </button>
+          </div>
+        )}
+      </div>
+    </div>
   );
 };
 

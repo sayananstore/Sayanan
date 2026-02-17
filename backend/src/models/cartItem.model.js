@@ -20,6 +20,11 @@ export const CartItem = sequelize.define(
       allowNull: false,
     },
 
+    size_id: {   
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+
     quantity: {
       type: DataTypes.INTEGER,
       defaultValue: 1,

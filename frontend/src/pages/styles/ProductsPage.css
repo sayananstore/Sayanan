@@ -1,0 +1,120 @@
+/* ================= PAGE ================= */
+.products-page {
+  padding: 24px 16px 60px;
+}
+
+.products-container {
+  max-width: 1400px;
+  margin: 40px;
+}
+
+.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 10px 0 20px;
+}
+
+/* ================= FILTERS ================= */
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.filter-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-family:Arial, Helvetica, sans-serif
+}
+
+/* pill buttons */
+.pill {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.pill:hover {
+  border-color: #000;
+}
+
+.pill.active {
+  background: #000;
+  color: white;
+  border-color: #000;
+}
+
+/* price */
+.price-group input[type="range"] {
+  width: 120px;
+}
+
+/* sort */
+.sort-select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+/* ================= PRODUCTS ================= */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* ================= PAGINATION ================= */
+.pagination {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  align-items: center;
+}
+
+.pagination button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #000;
+  background: #000;
+  color: white;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ================= LOADING ================= */
+.loading {
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1024px) {
+  .products-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .products-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+}

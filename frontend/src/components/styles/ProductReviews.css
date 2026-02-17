@@ -1,0 +1,48 @@
+.reviews-wrapper{
+  margin-top:100px;
+  max-width:900px;
+}
+
+.reviews-title{
+  font-size:1.8rem;
+  margin-bottom:30px;
+}
+
+.reviews-summary{
+  display:flex;
+  align-items:center;
+  gap:20px;
+  margin-bottom:40px;
+}
+
+.rating-big{
+  font-size:2.5rem;
+  font-weight:600;
+}
+
+.total-reviews{
+  color:#666;
+}
+
+.reviews-list{
+  display:flex;
+  flex-direction:column;
+  gap:20px;
+}
+
+.review-card{
+  padding:20px;
+  border:1px solid #eee;
+}
+
+.review-header{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:10px;
+  font-weight:500;
+}
+
+.review-comment{
+  color:#555;
+  line-height:1.7;
+}

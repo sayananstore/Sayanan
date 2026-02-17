@@ -1,0 +1,93 @@
+.similar-wrapper{
+  padding: 60px 0;
+  height: 100%;
+  overflow-x: hidden;
+  /* background: #121212; */
+  color: #C9A24D;
+}
+
+/* header */
+
+.similar-header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:24px;
+}
+
+.similar-header h2{
+  font-size:1.9rem;
+  font-weight:500;
+}
+
+
+/* =============================
+        SCROLL CONTAINER
+============================= */
+
+.similar-scroll{
+
+  display:flex;
+  gap:18px;
+
+  overflow-x:auto;
+  overflow-y:hidden;
+
+  scroll-snap-type:x mandatory;
+
+  padding-bottom:10px;
+
+  -webkit-overflow-scrolling: touch; /* momentum scroll */
+}
+
+
+/* hide scrollbar but KEEP scroll */
+
+.similar-scroll::-webkit-scrollbar{
+  display:none;
+}
+
+.similar-scroll{
+  scrollbar-width:none;
+}
+
+
+/* =============================
+        CARD SIZING
+   (MOST IMPORTANT PART)
+============================= */
+
+.similar-card-wrapper{
+
+  flex: 0 0 auto;
+
+  width:240px;
+
+  scroll-snap-align:start;
+}
+
+
+/* ---------- TABLET ---------- */
+
+@media (max-width:1024px){
+
+  .similar-card-wrapper{
+    width:200px;
+  }
+
+}
+
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width:640px){
+
+  .similar-wrapper{
+    padding:0 16px;
+  }
+
+  .similar-card-wrapper{
+    width:160px;
+  }
+
+}

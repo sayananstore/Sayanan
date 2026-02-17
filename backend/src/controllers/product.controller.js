@@ -61,6 +61,7 @@ export const getAllProducts = async (req, res) => {
   try {
     const {
       category,
+	  category_id,
       subcategory,
       gender,
       minPrice,
@@ -84,7 +85,9 @@ export const getAllProducts = async (req, res) => {
       if (minPrice) whereClause.base_price[Op.gte] = Number(minPrice);
       if (maxPrice) whereClause.base_price[Op.lte] = Number(maxPrice);
     }
-
+	if(category_id){
+		whereClause.category_id = category_id;
+	}
     // 🔍 Search Filter (name + description)
     if (search) {
       whereClause[Op.or] = [

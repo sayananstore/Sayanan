@@ -92,3 +92,37 @@ export const deleteAddress = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+
+export const setDefaultAddress = async (req, res) => {
+  const transaction = await sequelize.transaction();
+
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+
+    const address = await Address.findOne({
+      where: { id, user_id: userId },
+      transaction,
+    });
+
+    if (!address)
+      return res.status(404).json({ message: "Address not found" });
+
+    // Remove existing default
+    await Address.update(
+      { is_default: false },
+      { where: { user_id: userId }, transaction }
+    );
+
+    address.is_default = true;
+    await address.save({ transaction });
+
+    await transaction.commit();
+
+    res.json({ message: "Default address updated" });
+  } catch (error) {
+    await transaction.rollback();
+    res.status(500).json({ message: "Failed to set default address" });
+  }
+};

@@ -56,7 +56,10 @@ export const Order = sequelize.define(
       type: DataTypes.CHAR(3),
       defaultValue: "INR",
     },
-
+	razorpay_order_id: {
+  type: DataTypes.STRING,
+  allowNull: true,
+},
     payment_status: {
       type: DataTypes.ENUM(
         "PENDING",

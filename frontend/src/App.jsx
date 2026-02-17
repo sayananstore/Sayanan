@@ -7,6 +7,12 @@ import ProductDetail from "./pages/ProductDetail";
 import AuthPage from "./pages/AuthPage";
 import { useLocation } from "react-router-dom";
 import ProductsPage from "./pages/ProductsPage";
+import WishList from "./pages/WishList";
+import { WishlistProvider } from "./context/WishlistContext";
+import { CartProvider } from "./context/CartContext";
+import CartPage from "./pages/CartPage"; 
+import "./App.css"
+
 const App = () => {
 	const location = useLocation();
 
@@ -15,8 +21,11 @@ const App = () => {
     location.pathname === "/signup";
   return (
     <>
+	<div className="app">	
+	<CartProvider>
+	<WishlistProvider>
       {!hideNavbar && <Navbar />}
-
+	  <main className="page-content">
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<AuthPage />} />
@@ -24,9 +33,15 @@ const App = () => {
         {/* <Route path="/products" element={<ProductList />} /> */}
 		<Route path="/products" element={<ProductsPage />} />
 		<Route path="/products/:id" element={<ProductDetail />} />
+		<Route path="/wishlist" element={<WishList />} />
+		<Route path="/cart" element={<CartPage />} />
       </Routes>
-
+	  </main>
+	</WishlistProvider>
+	</CartProvider>
       <Footer />
+	</div>
+
     </>
   );
 };

@@ -1,7 +1,7 @@
 import { Box, Grid, Typography, Divider } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getProducts } from "../api/product.api";
-import ProductCard from "../components/ProductCard";
+import ProductCard from "../ProductCards/ProductCard";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);

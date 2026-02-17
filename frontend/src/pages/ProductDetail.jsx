@@ -1,20 +1,31 @@
-import {
-  Box,
-  Grid,
-  Typography,
-  Button,
-  Divider,
-} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import ImageGallery from "../components/ImageGallery";
 import QuantitySelector from "../components/QuantitySelector";
 import { getProductById } from "../api/product.api";
+import {
+  toggleWishlist,
+  getWishlistStatus,
+} from "../api/wishlist.api";
+import ProductReviews from "../components/ProductReviews";
+import SimilarProducts from "../components/SimilarProducts";
+import "./styles/ProductDetail.css";
+import FeaturedSection from "../sections/FeaturedSection";
+
 
 const ProductDetail = () => {
+
   const { id } = useParams();
+
   const [product, setProduct] = useState(null);
   const [qty, setQty] = useState(1);
+
+  const [wishlisted, setWishlisted] = useState(false);
+  const [toggling, setToggling] = useState(false);
+
+
+
+  /* ================= FETCH PRODUCT ================= */
 
   useEffect(() => {
     getProductById(id)
@@ -22,96 +33,131 @@ const ProductDetail = () => {
       .catch(console.error);
   }, [id]);
 
+
+
+  /* ================= FETCH WISHLIST ================= */
+
+  useEffect(() => {
+
+    const fetchWishlist = async () => {
+      try {
+
+        const res = await getWishlistStatus(id);
+        setWishlisted(res.data.wishlisted);
+
+      } catch (err) {
+        console.error("Wishlist status failed:", err);
+      }
+    };
+
+    fetchWishlist();
+
+  }, [id]);
+
+
+
+  /* ================= TOGGLE ================= */
+
+  const handleToggleWishlist = async () => {
+
+    if (toggling) return;
+
+    setToggling(true);
+
+    const previous = wishlisted;
+
+    // optimistic
+    setWishlisted(!previous);
+
+    try {
+
+      const res = await toggleWishlist({
+        product_id: id,
+      });
+
+      setWishlisted(res.data.wished);
+
+    } catch (err) {
+
+      console.error(err);
+      setWishlisted(previous);
+
+    } finally {
+      setToggling(false);
+    }
+  };
+
+
+
   if (!product) return null;
 
+
+
   return (
-    <Box
-      sx={{
-        maxWidth: "1400px",
-        mx: "auto",
-        px: { xs: 2, md: 4 },
-        py: { xs: 4, md: 8 },
-      }}
-    >
-      <Grid container spacing={{ xs: 4, md: 8 }}>
-        {/* LEFT: IMAGES */}
-        <Grid item xs={12} md={6}>
+    <div className="product-detail">
+
+      <div className="product-detail-grid">
+
+        {/* LEFT */}
+        <div className="gallery-wrapper">
           <ImageGallery images={product.images} />
-        </Grid>
+        </div>
 
-        {/* RIGHT: INFO */}
-        <Grid item xs={12} md={6}>
-          <Typography
-            sx={{
-              fontSize: { xs: "1.6rem", md: "2.2rem" },
-              fontWeight: 500,
-              mb: 1,
-            }}
-          >
+
+
+        {/* RIGHT */}
+        <div className="product-info">
+
+          <div className="product-title">
             {product.name}
-          </Typography>
+          </div>
 
-          <Typography
-            sx={{
-              fontSize: "1.4rem",
-              fontWeight: 600,
-              mb: 2,
-            }}
-          >
+          <div className="product-price">
             ₹{product.base_price}
-          </Typography>
+          </div>
 
-          <Typography
-            sx={{
-              color: "text.secondary",
-              mb: 3,
-              lineHeight: 1.8,
-            }}
-          >
+
+          <div className="product-description">
             {product.description}
-          </Typography>
+          </div>
 
-          <Divider sx={{ mb: 3 }} />
+
+          <div className="product-divider" />
+
 
           {/* Quantity */}
-          <Typography sx={{ mb: 1 }}>Quantity</Typography>
+          <div className="product-qty-label">
+            Select Quantity
+          </div>
+
           <QuantitySelector value={qty} setValue={setQty} />
 
-          {/* CTA */}
-          <Box sx={{ mt: 4, display: "flex", gap: 2 }}>
-            <Button
-              variant="contained"
-              sx={{
-                backgroundColor: "#000",
-                color: "#fff",
-                px: 4,
-                py: 1.5,
-                borderRadius: 0,
-                "&:hover": { backgroundColor: "#000" },
-              }}
-            >
-              Add to Cart
-            </Button>
 
-            <Button
-              variant="outlined"
-              sx={{
-                px: 4,
-                py: 1.5,
-                borderRadius: 0,
-                borderColor: "#000",
-                color: "#000",
-                "&:hover": {
-                  borderColor: "#000",
-                },
-              }}
+          {/* ACTIONS */}
+          <div className="product-actions">
+
+            <button className="btn-primary">
+              Add to Cart
+            </button>
+
+
+            <button
+              className={`btn-wishlist ${
+                wishlisted ? "wishlisted" : ""
+              }`}
+              onClick={handleToggleWishlist}
+              disabled={toggling}
             >
-              Add to Wishlist
-            </Button>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+              {wishlisted ? "♥ Wishlisted" : "♡ Wishlist"}
+            </button>
+
+          </div>
+
+        </div>
+      </div>
+      <ProductReviews productId={id} />
+      <SimilarProducts category={product.category_id} />
+    </div>
   );
 };
 
