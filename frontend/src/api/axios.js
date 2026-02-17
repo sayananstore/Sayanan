@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "https://sayanan.onrender.com/api",
   headers: {
     "Cache-Control": "no-cache",
   },
