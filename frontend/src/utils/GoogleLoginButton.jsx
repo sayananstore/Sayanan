@@ -12,7 +12,7 @@ const GoogleLoginButton = () => {
       const idToken = await result.user.getIdToken();
 
       const res = await axios.post(
-        "https://sayanan.vercel.app//api/auth/firebase",
+        "https://sayanan.onrender.com/api/auth/firebase",
         { idToken }
       );
 
