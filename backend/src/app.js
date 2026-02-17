@@ -27,7 +27,8 @@ const allowedOrigins = [
   'https://ai-interview-client-dfapbpw84-garvit-mathurs-projects.vercel.app',
   'https://ai-interview-client-woad.vercel.app',
   'https://ai-interview-client-garvit-mathurs-projects.vercel.app',
-	'https://ai-interview-client-git-main-garvit-mathurs-projects.vercel.app'
+	'https://ai-interview-client-git-main-garvit-mathurs-projects.vercel.app',
+	'https://sayanan.vercel.app/'
 ];
 
 app.use(cors({
