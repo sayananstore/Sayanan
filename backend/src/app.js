@@ -44,8 +44,7 @@ app.use(
 );
 
 // Handle preflight requests
-app.options("*", cors());
-
+app.options(/.*/, cors());
 /* ===============================
    SECURITY HEADERS (For Google Login Popup)
 ================================= */
