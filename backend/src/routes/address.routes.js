@@ -4,7 +4,7 @@ import {
   getMyAddresses,
   updateAddress,
   deleteAddress,
-  setDefaultAddress
+	setDefaultAddress
 } from "../controllers/address.controller.js";
 import { protect } from "../middlewares/auth.middleware.js";
 
