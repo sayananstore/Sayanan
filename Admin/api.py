@@ -1,6 +1,6 @@
 import requests
 
-BASE_URL = "https://sayanan.onrender.com/api"
+BASE_URL = "http://76.13.245.24:5000/api"
 
 def get_headers(token=None):
     headers = {"Content-Type": "application/json"}
